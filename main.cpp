@@ -11,7 +11,7 @@ void rgbHistogramm(Mat img);  // функция для цветных изобр
 int main (){
     Mat img = cvLoadImage("/home/../images/neymar1.jpeg");
     rgbHistogramm(img);  // вызываем дляя цветного изобр.
-    grayscalesHistogramm(img);// вызываем для черно-белого изоболб
+    grayscalesHistogramm(img);// вызываем для черно-белого изоб
     waitKey(0);
     return 0;
 }
