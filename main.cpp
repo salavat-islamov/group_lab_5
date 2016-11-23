@@ -9,7 +9,7 @@ using namespace cv;
 void grayscalesHistogramm(Mat img); // функция для черно-белых изобр.
 void rgbHistogramm(Mat img);  // функция для цветных изобр.
 int main (){
-    Mat img = cvLoadImage("/home/salavat/Downloads/images/neymar1.jpeg");
+    Mat img = cvLoadImage("/home/../images/neymar1.jpeg");
     rgbHistogramm(img);  // вызываем дляя цветного изобр.
     grayscalesHistogramm(img);// вызываем для черно-белого изоболб
     waitKey(0);
@@ -111,7 +111,7 @@ void rgbHistogramm(Mat img) {
 
     for (int i = 0; i < img.rows; i++){
         for (int k = 0; k < img.cols; k++){
-            // функция (cdf(v)-cdfmin)/((N*M)-cdfmin)*(L-1)
+            // функция  round((cdf(v)-cdfmin)/((N*M)-cdfmin)*(L-1))
             dst.at<Vec3b>(i,k)[0] = round((float)(cdfB[img.at<Vec3b>(i,k)[0]]-cdfB[minIntensB])/(float)((img.rows*img.cols)-cdfB[minIntensB])*255);
             dst.at<Vec3b>(i,k)[1] = round((float)(cdfG[img.at<Vec3b>(i,k)[1]]-cdfG[minIntensG])/(float)((img.rows*img.cols)-cdfG[minIntensG])*255);
             dst.at<Vec3b>(i,k)[0] = round((float)(cdfR[img.at<Vec3b>(i,k)[0]]-cdfR[minIntensR])/(float)((img.rows*img.cols)-cdfR[minIntensR])*255);
