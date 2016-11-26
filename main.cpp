@@ -16,8 +16,6 @@ int main (){
     return 0;
 }
 void rgbHistogramm(Mat img) {
-
-
     Mat dst = img.clone();
     int cdfR [255];
     int countR[255];
@@ -39,7 +37,7 @@ void rgbHistogramm(Mat img) {
     int minIntensG;
     int minIntensB;
 
-    for (int i = 0; i < img.rows; i++){        //Находим количества интенсивностей
+    for (int i = 0; i < img.rows; i++){        
         for (int k = 0; k < img.rows; k++){
             countB[img.at<Vec3b>(i,k)[0]]+=1;
             countG[img.at<Vec3b>(i,k)[1]]+=1;
