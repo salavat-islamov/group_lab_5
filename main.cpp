@@ -16,8 +16,6 @@ int main (){
     return 0;
 }
 void rgbHistogramm(Mat img) {
-
-    
     Mat dst = img.clone();
     int cdfR [255];
     int countR[255];
