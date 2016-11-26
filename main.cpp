@@ -15,8 +15,8 @@ int main (){
     waitKey(0);
     return 0;
 }
-
 void rgbHistogramm(Mat img) {
+
 
     Mat dst = img.clone();
     int cdfR [255];
