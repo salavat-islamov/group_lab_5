@@ -10,10 +10,10 @@ void grayscalesHistogramm(Mat img); // функция для черно-белы
 void rgbHistogramm(Mat img);  // функция для цветных изобр.
 void openCvMethod(char* path);
 int main (){
-    Mat img = cvLoadImage("/home/beka/image/1.jpg.jpeg");
+    Mat img = cvLoadImage("/home/jyldyz/Pictures/neymar1.jpeg");
     rgbHistogramm(img);  // вызываем дляя цветного изобр.
     grayscalesHistogramm(img);// вызываем для черно-белого изоб
-    char* path = "/home/beka/image/1.jpg.jpeg";//путь кзображению для готовой функции
+    char* path = "/home/jyldyz/Pictures/neymar1.jpeg";//путь кзображению для готовой функции
     openCvMethod(path);
     waitKey(0);
     return 0;
@@ -187,6 +187,11 @@ void rgbHistogramm(Mat img) {
     void openCvMethod(char* path) {
         Mat img = imread(path, CV_LOAD_IMAGE_COLOR); //открываем изобр
 
+        if (img.empty()) //в случае неудачи, выйти из программы
+        {
+            cout << "Image cannot be loaded..!!" << endl;
+
+        }
         vector <Mat> channels;
         Mat img_hist_equalized;
 
@@ -200,5 +205,13 @@ void rgbHistogramm(Mat img) {
 
         cvtColor(img_hist_equalized, img_hist_equalized,
                  CV_YCrCb2BGR); //изменение цветного изображения из YCrCb в формате BGR (для правильного отображения изображения )
+
+        //показать изображение
+        imshow("Original Image", img);
+        imshow("Histogram Equalized", img_hist_equalized);
+
+        waitKey(0); //ждать нажатия клавиши
+
+        destroyAllWindows(); //уничтожить все открытые окна
 
     }
