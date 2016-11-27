@@ -1,76 +1,51 @@
-#include <iostream>
-#include <opencv2/core/core.hpp>
-#include <opencv2/highgui/highgui.hpp>
-#include <cv.h>
-#include <math.h>
-using namespace std;
-using namespace cv;
-void grayscalesHistogramm(Mat img); // функция для черно-белых изобр.
-void rgbHistogramm(Mat img);  // функция для цветных изобр.
-void openCvMethod(char* path);
-int main (){
-    Mat img = cvLoadImage("/home/guka/Downloads/images/r.jpeg");
-    rgbHistogramm(img);  // вызываем дляя цветного изобр.
-    grayscalesHistogramm(img);// вызываем для черно-белого изоб
-    char* path = "/home/guka/Downloads/images/r.jpeg";//путь кзображению для готовой функции
-    openCvMethod(path);
-    waitKey(0);
-    return 0;
-}
-void rgbHistogramm(Mat img) {
-    Mat dst = img.clone();
-    int cdfR [255];
-    int countR[255];
-    int cdfG [255];
-    int countG[255];
-    int cdfB [255];
-    int countB[255];
+    int sumR = 0;
+    int sumG = 0;
+    int sumB = 0;
 
-    for (int k = 0; k < 255; k++){
-        countR[k] = 0;
-        countG[k] = 0;
-        countB[k] = 0;
+    for (int i = minIntensR; i < 255; i++){  // вычисление CDF для каждой интенсивности красного цвета
+        if (i == minIntensR){
+            cdfR[i] = countR[minIntensR];
+            sumR+=cdfR[i];
+        }else if(countR[i] != 0) {
+            sumR += countR[i];
+            cdfR[i] = sumR;
+        }
     }
 
-    int cdfMinR ;
-    int cdfMinG ;
-    int cdfMinB ;
-    int minIntensR;
-    int minIntensG;
-    int minIntensB;
+    for (int i = minIntensG; i < 255; i++){ // вычисление CDF для каждой интенсивности зеленого цвета
+        if (i == minIntensG){
+            cdfG[i] = countG[minIntensG];
+            sumG+=cdfG[i];
+        }else if(countG[i] != 0) {
+            sumG += countG[i];
+            cdfG[i] = sumG;
+        }
+
+    }
+
+    for (int i = minIntensB; i < 255; i++){   // вычисление CDF для каждой интенсивности зеленого цвета
+        if (i == minIntensB){
+            cdfB[i] = countB[minIntensB];
+            sumB+=cdfB[i];
+        }else if(countB[i] != 0) {
+            sumB += countB[i];
+            cdfB[i] = sumB;
+        }
+
+    }
 
     for (int i = 0; i < img.rows; i++){
-        for (int k = 0; k < img.rows; k++){
-            countB[img.at<Vec3b>(i,k)[0]]+=1;
-            countG[img.at<Vec3b>(i,k)[1]]+=1;
-            countR[img.at<Vec3b>(i,k)[2]]+=1;
+        for (int k = 0; k < img.cols; k++){
+            // функция  round((cdf(v)-cdfmin)/((N*M)-cdfmin)*(L-1))
+            dst.at<Vec3b>(i,k)[0] = round((float)(cdfB[img.at<Vec3b>(i,k)[0]]-cdfB[minIntensB])/(float)((img.rows*img.cols)-cdfB[minIntensB])*255);
+            dst.at<Vec3b>(i,k)[1] = round((float)(cdfG[img.at<Vec3b>(i,k)[1]]-cdfG[minIntensG])/(float)((img.rows*img.cols)-cdfG[minIntensG])*255);
+            dst.at<Vec3b>(i,k)[2] = round((float)(cdfR[img.at<Vec3b>(i,k)[2]]-cdfR[minIntensR])/(float)((img.rows*img.cols)-cdfR[minIntensR])*255);
         }
     }
 
-    int temp = 0;
-    bool  r = false;
-    bool  g = false;
-    bool  b = false;
+    cvNamedWindow("Origin(RGB)",1);
+    cvNamedWindow("Result(RGB)",1);
+    imshow("Origin(RGB)", img);
+    imshow("Result(RGB)", dst);
+}
 
-    for (int k = 0; k < 255; k++){
-        if (countR[k] != 0 && !r) {
-            minIntensR = k;         // находим первое значение CDF для красного цвета
-            cdfMinR = countR[k];
-            r = true;
-            break;
-        }
-        if (countG[k] != 0 && !g) {
-            minIntensG = k;       // находим первое значение CDF для зеленого цвета
-            cdfMinG = countG[k];
-            g = true;
-            break;
-        }
-        if (countB[k] != 0 && !b) {
-            minIntensB = k;        // находим первое значение CDF для синего цвета
-            cdfMinR = countB[k];
-            b = true;
-            break;
-        }
-    }
-
-    }
