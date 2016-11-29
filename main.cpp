@@ -206,6 +206,6 @@ void rgbHistogramm(Mat img) {
         imshow("Histogram Equalized", img_hist_equalized);
 
         waitKey(0); //ждать нажатия клавиши
-        
+
 
     }
